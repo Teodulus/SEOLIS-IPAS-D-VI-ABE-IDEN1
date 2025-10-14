@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asesmen Biotik dan Abiotik</title>
+    <style>
+        /* Pengaturan Dasar & Palet Warna */
+        :root {
+            --dark-green: #043915;
+            --medium-green: #4c763b;
+            --light-green: #b0ce88;
+            --light-yellow: #fefc8e;
+            --white: #FFFFFF;
+            --black: #000000;
+            --light-gray-bg: #f5f5f5;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-gray-bg);
+            color: var(--black);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--dark-green);
+            color: var(--white);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .header-logo {
+            height: 50px;
+            margin-right: 15px;
+        }
+
+        header h1 {
+            font-size: 1.1em;
+            margin: 0;
+            font-weight: bold;
+        }
+        
+        #progressInfo {
+            font-size: 0.9em;
+            margin-top: 4px;
+        }
+
+        /* Konten Utama */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #game-container, #initial-screen, #result-area {
+            background-color: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        /* Tampilan Awal */
+        #initial-screen h2 {
+            color: var(--dark-green);
+            margin-top: 0;
+        }
+
+        #initial-screen input {
+            padding: 12px;
+            margin-bottom: 15px;
+            width: 90%;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 1em;
+            text-align: center;
+        }
+
+        #start-btn {
+            background-color: var(--medium-green);
+            color: var(--white);
+        }
+
+        /* Tampilan Game */
+        #game-container {
+            display: none;
+        }
+
+        #score-area {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--medium-green);
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 2px solid var(--medium-green);
+            border-radius: 10px;
+        }
+
+        #component-name {
+            font-size: 2.2em;
+            color: var(--dark-green);
+            font-weight: bold;
+            margin: 15px 0 20px 0;
+            padding: 15px;
+            background-color: var(--light-yellow);
+            border-radius: 8px;
+        }
+
+        #button-area {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #biotik-btn {
+            background-color: var(--medium-green);
+            color: var(--white);
+        }
+
+        #abiotik-btn {
+            background-color: var(--light-green);
+            color: var(--black);
+        }
+
+        #feedback-area {
+            margin: 15px 0;
+            font-size: 1.2em;
+            font-weight: bold;
+            height: 25px;
+        }
+
+        .correct {
+            color: var(--medium-green);
+        }
+
+        .wrong {
+            color: #dc3545; /* Merah untuk feedback salah agar jelas */
+        }
+
+        /* Tampilan Hasil */
+        #result-area {
+            display: none;
+            border: 4px solid var(--dark-green);
+        }
+
+        #result-area h2 {
+            color: var(--dark-green);
+            font-size: 1.8em;
+            margin-top: 0;
+        }
+
+        #result-details {
+            text-align: left;
+            margin: 15px 0;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        #result-details p {
+            margin: 8px 0;
+        }
+
+        #print-btn {
+            background-color: var(--medium-green);
+            color: var(--white);
+            padding: 12px 24px;
+            margin-top: 15px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-green);
+            color: var(--white);
+            text-align: center;
+            padding: 15px;
+            font-size: 0.9em;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Media Query untuk Desktop (opsional, fokus mobile) */
+        @media (min-width: 600px) {
+            #button-area {
+                flex-direction: row;
+                justify-content: space-around;
+            }
+            button {
+                width: 48%;
+            }
+             header h1 {
+                font-size: 1.5em;
+            }
+        }
+        
+        /* Pengaturan Cetak */
+        @media print {
+            body { background-color: white; }
+            header, footer, #initial-screen, #game-container, #print-btn { display: none !important; }
+            main { padding: 0; }
+            #result-area { 
+                display: block !important;
+                box-shadow: none; 
+                border: 2px solid black; 
+                max-width: 100%; 
+                width: 100%;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img id="logo" src="SEOLIS.png" alt="Logo SEOLIS" class="header-logo">
+        <div class="header-text">
+            <h1>Asesmen Biotik dan Abiotik di dalam Ekosistem</h1>
+            <div id="progressInfo">Masukkan identitas untuk mulai</div>
+        </div>
+    </header>
+
+    <main>
+        <div id="initial-screen">
+            <h2>Selamat Datang!</h2>
+            <p>Masukkan identitas untuk memulai asesmen (10 Soal).</p>
+            <input type="text" id="student-name" placeholder="Nama Lengkap Peserta Didik" required>
+            <button id="start-btn" onclick="startGame()">Mulai Asesmen</button>
+        </div>
+
+        <div id="game-container">
+            <div id="score-area">
+                Skor: <span id="score">0</span>
+            </div>
+            <div id="question-area">
+                <p>Klasifikasikan komponen ini:</p>
+                <h2 id="component-name"></h2>
+            </div>
+            <div id="feedback-area"></div>
+            <div id="button-area">
+                <button id="biotik-btn" onclick="checkAnswer('biotik')">BIOTIK (Hidup)</button>
+                <button id="abiotik-btn" onclick="checkAnswer('abiotik')">ABIOTIK (Tak Hidup)</button>
+            </div>
+        </div>
+
+        <div id="result-area">
+            <h2>Hasil Pengerjaan Asesmen</h2>
+            <div id="result-details"></div>
+            <button id="print-btn" onclick="window.print()">Cetak Hasil (Simpan PDF)</button>
+        </div>
+    </main>
+    
+    <footer>&copy; 2025 Seoludut Education Learning System</footer>
+
+    <script>
+        const ALL_QUESTIONS = [
+            { component: "Pohon", type: "biotik" },
+            { component: "Air", type: "abiotik" },
+            { component: "Batu", type: "abiotik" },
+            { component: "Kucing", type: "biotik" },
+            { component: "Sinar Matahari", type: "abiotik" },
+            { component: "Jamur", type: "biotik" },
+            { component: "Tanah", type: "abiotik" },
+            { component: "Burung", type: "biotik" },
+            { component: "Udara", type: "abiotik" },
+            { component: "Bakteri", type: "biotik" }
+        ];
+
+        let studentName = '';
+        let currentScore = 0;
+        let questionsAnswered = 0;
+        let currentQuestionIndex = 0;
+        let shuffledQuestions = [];
+        let correctAnswersCount = 0;
+
+        const initialScreen = document.getElementById('initial-screen');
+        const gameContainer = document.getElementById('game-container');
+        const resultArea = document.getElementById('result-area');
+        const progressInfo = document.getElementById('progressInfo');
+        const scoreDisplay = document.getElementById('score');
+        const componentNameDisplay = document.getElementById('component-name');
+        const feedbackArea = document.getElementById('feedback-area');
+        const buttons = document.querySelectorAll('#button-area button');
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function startGame() {
+            const nameInput = document.getElementById('student-name');
+            studentName = nameInput.value.trim();
+            
+            if (studentName === '') {
+                alert('Mohon masukkan nama Anda!');
+                return;
+            }
+            
+            initialScreen.style.display = 'none';
+            resultArea.style.display = 'none';
+            gameContainer.style.display = 'block';
+            
+            initializeGame();
+        }
+
+        function endGame() {
+            gameContainer.style.display = 'none';
+            resultArea.style.display = 'block';
+            progressInfo.textContent = 'Hasil Akhir Asesmen';
+            
+            const percentage = (correctAnswersCount / ALL_QUESTIONS.length) * 100;
+
+            const outputText = `
+                <p><strong>Nama Peserta:</strong> ${studentName}</p>
+                <p><strong>Total Soal:</strong> ${ALL_QUESTIONS.length}</p>
+                <p><strong>Jawaban Benar:</strong> ${correctAnswersCount}</p>
+                <p><strong>Jawaban Salah:</strong> ${ALL_QUESTIONS.length - correctAnswersCount}</p>
+                <p><strong>Skor Akhir:</strong> ${currentScore} / 100</p>
+                <p><strong>Persentase Benar:</strong> ${percentage.toFixed(0)}%</p>
+            `;
+            
+            document.getElementById('result-details').innerHTML = outputText;
+        }
+        
+        function loadNewQuestion() {
+            if (questionsAnswered >= ALL_QUESTIONS.length) {
+                endGame();
+                return;
+            }
+            
+            currentQuestion = shuffledQuestions[currentQuestionIndex];
+            
+            progressInfo.textContent = `Soal ${questionsAnswered + 1} dari ${ALL_QUESTIONS.length}`;
+            componentNameDisplay.textContent = currentQuestion.component;
+            
+            feedbackArea.textContent = '';
+            feedbackArea.className = '';
+            
+            buttons.forEach(btn => btn.disabled = false);
+        }
+
+        function checkAnswer(userAnswer) {
+            buttons.forEach(btn => btn.disabled = true);
+            
+            const isCorrect = userAnswer === currentQuestion.type;
+            
+            if (isCorrect) {
+                currentScore += 10;
+                correctAnswersCount++;
+                feedbackArea.textContent = '✔️ BENAR!';
+                feedbackArea.classList.add('correct');
+            } else {
+                currentScore = Math.max(0, currentScore - 0); // Tidak ada pengurangan nilai
+                feedbackArea.textContent = `❌ SALAH! Jawaban: ${currentQuestion.type.toUpperCase()}`;
+                feedbackArea.classList.add('wrong');
+            }
+            
+            scoreDisplay.textContent = currentScore;
+            questionsAnswered++;
+            currentQuestionIndex++;
+            
+            setTimeout(() => {
+                loadNewQuestion();
+            }, isCorrect ? 800 : 1500); // Jeda lebih cepat jika benar
+        }
+
+        function initializeGame() {
+            shuffledQuestions = [...ALL_QUESTIONS];
+            shuffleArray(shuffledQuestions);
+            
+            currentScore = 0;
+            questionsAnswered = 0;
+            currentQuestionIndex = 0;
+            correctAnswersCount = 0;
+            scoreDisplay.textContent = currentScore;
+            
+            loadNewQuestion();
+        }
+    </script>
+</body>
+</html>
