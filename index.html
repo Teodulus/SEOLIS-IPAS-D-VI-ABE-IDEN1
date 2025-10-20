@@ -113,6 +113,18 @@
             border-radius: 10px;
         }
 
+        /* Gaya untuk Gambar Komponen */
+        #component-image {
+            width: 80%; 
+            max-width: 250px; 
+            height: auto; 
+            margin: 10px auto 20px auto; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: block; /* Pastikan gambar berada di tengah */
+        }
+        /* Akhir Gaya untuk Gambar Komponen */
+
         #component-name {
             font-size: 2.2em;
             color: var(--dark-green);
@@ -244,7 +256,7 @@
 <body>
 
     <header>
-        <img id="logo" src="SEOLIS.png" alt="Logo SEOLIS" class="header-logo">
+        <img id="logo" src="SEOLIS.png" alt="Logo SEOLIS" class="header-logo"> 
         <div class="header-text">
             <h1>Asesmen Biotik dan Abiotik di dalam Ekosistem</h1>
             <div id="progressInfo">Masukkan identitas untuk mulai</div>
@@ -265,6 +277,7 @@
             </div>
             <div id="question-area">
                 <p>Klasifikasikan komponen ini:</p>
+                <img id="component-image" src="" alt="Gambar Komponen Ekosistem">
                 <h2 id="component-name"></h2>
             </div>
             <div id="feedback-area"></div>
@@ -284,17 +297,18 @@
     <footer>&copy; 2025 Seoludut Education Learning System</footer>
 
     <script>
+        // Data Soal dengan Kata Kunci Gambar yang Diperbarui
         const ALL_QUESTIONS = [
-            { component: "Pohon", type: "biotik" },
-            { component: "Air", type: "abiotik" },
-            { component: "Batu", type: "abiotik" },
-            { component: "Kucing", type: "biotik" },
-            { component: "Sinar Matahari", type: "abiotik" },
-            { component: "Jamur", type: "biotik" },
-            { component: "Tanah", type: "abiotik" },
-            { component: "Burung", type: "biotik" },
-            { component: "Udara", type: "abiotik" },
-            { component: "Bakteri", type: "biotik" }
+            { component: "Pohon", type: "biotik", imageKeyword: "pohon" },
+            { component: "Air", type: "abiotik", imageKeyword: "air danau" },
+            { component: "Batu", type: "abiotik", imageKeyword: "batu besar" },
+            { component: "Kucing", type: "biotik", imageKeyword: "kucing" },
+            { component: "Sinar Matahari", type: "abiotik", imageKeyword: "sinar matahari" },
+            { component: "Jamur", type: "biotik", imageKeyword: "jamur" },
+            { component: "Tanah", type: "abiotik", imageKeyword: "tanah" },
+            { component: "Burung", type: "biotik", imageKeyword: "burung" },
+            { component: "Udara", type: "abiotik", imageKeyword: "angin" },
+            { component: "Bakteri", type: "biotik", imageKeyword: "mikroorganisme" } 
         ];
 
         let studentName = '';
@@ -312,6 +326,8 @@
         const componentNameDisplay = document.getElementById('component-name');
         const feedbackArea = document.getElementById('feedback-area');
         const buttons = document.querySelectorAll('#button-area button');
+        // Elemen Gambar Baru
+        const componentImageDisplay = document.getElementById('component-image');
 
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -355,6 +371,7 @@
             document.getElementById('result-details').innerHTML = outputText;
         }
         
+        // Fungsi untuk memuat soal baru (DIUBAH)
         function loadNewQuestion() {
             if (questionsAnswered >= ALL_QUESTIONS.length) {
                 endGame();
@@ -362,6 +379,14 @@
             }
             
             currentQuestion = shuffledQuestions[currentQuestionIndex];
+            
+            // Logika untuk menampilkan gambar dari Unsplash Source
+            const imageKeyword = currentQuestion.imageKeyword;
+            // URL menggunakan layanan placeholder gambar Unsplash berdasarkan kata kunci
+            const imageUrl = `https://source.unsplash.com/300x200/?${encodeURIComponent(imageKeyword)}`;
+
+            componentImageDisplay.src = imageUrl;
+            componentImageDisplay.alt = `Gambar ${currentQuestion.component}`;
             
             progressInfo.textContent = `Soal ${questionsAnswered + 1} dari ${ALL_QUESTIONS.length}`;
             componentNameDisplay.textContent = currentQuestion.component;
