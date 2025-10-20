@@ -40,7 +40,7 @@
         }
 
         .header-logo {
-            height: 50px;
+            height: 50px; 
             margin-right: 15px;
         }
 
@@ -121,7 +121,9 @@
             margin: 10px auto 20px auto; 
             border-radius: 10px; 
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: block; /* Pastikan gambar berada di tengah */
+            display: block; 
+            min-height: 150px; 
+            background-color: var(--light-gray-bg);
         }
         /* Akhir Gaya untuk Gambar Komponen */
 
@@ -179,7 +181,7 @@
         }
 
         .wrong {
-            color: #dc3545; /* Merah untuk feedback salah agar jelas */
+            color: #dc3545; 
         }
 
         /* Tampilan Hasil */
@@ -256,7 +258,7 @@
 <body>
 
     <header>
-        <img id="logo" src="SEOLIS.png" alt="Logo SEOLIS" class="header-logo"> 
+        <img id="logo" src="SEOLIS.png" alt="Logo SEOLIS" class="header-logo">
         <div class="header-text">
             <h1>Asesmen Biotik dan Abiotik di dalam Ekosistem</h1>
             <div id="progressInfo">Masukkan identitas untuk mulai</div>
@@ -297,18 +299,20 @@
     <footer>&copy; 2025 Seoludut Education Learning System</footer>
 
     <script>
-        // Data Soal dengan Kata Kunci Gambar yang Diperbarui
+        // Data Soal dengan Nama File Gambar Langsung (TANPA folder 'gambar/')
+        // PASTIKAN SEMUA FILE INI BERADA SATU DIREKTORI DENGAN FILE HTML
         const ALL_QUESTIONS = [
-            { component: "Pohon", type: "biotik", imageKeyword: "pohon" },
-            { component: "Air", type: "abiotik", imageKeyword: "air danau" },
-            { component: "Batu", type: "abiotik", imageKeyword: "batu besar" },
-            { component: "Kucing", type: "biotik", imageKeyword: "kucing" },
-            { component: "Sinar Matahari", type: "abiotik", imageKeyword: "sinar matahari" },
-            { component: "Jamur", type: "biotik", imageKeyword: "jamur" },
-            { component: "Tanah", type: "abiotik", imageKeyword: "tanah" },
-            { component: "Burung", type: "biotik", imageKeyword: "burung" },
-            { component: "Udara", type: "abiotik", imageKeyword: "angin" },
-            { component: "Bakteri", type: "biotik", imageKeyword: "mikroorganisme" } 
+            // Jika file kamu .jpg, ganti .png menjadi .jpg
+            { component: "Pohon", type: "biotik", imageSrc: "pohon.png" }, // Dihapus: gambar/
+            { component: "Air", type: "abiotik", imageSrc: "air.png" },
+            { component: "Batu", type: "abiotik", imageSrc: "batu.png" },
+            { component: "Kucing", type: "biotik", imageSrc: "kucing.png" },
+            { component: "Sinar Matahari", type: "abiotik", imageSrc: "matahari.png" },
+            { component: "Jamur", type: "biotik", imageSrc: "jamur.png" },
+            { component: "Tanah", type: "abiotik", imageSrc: "tanah.png" },
+            { component: "Burung", type: "biotik", imageSrc: "burung.png" },
+            { component: "Udara", type: "abiotik", imageSrc: "udara.png" },
+            { component: "Bakteri", type: "biotik", imageSrc: "bakteri.png" } 
         ];
 
         let studentName = '';
@@ -326,8 +330,7 @@
         const componentNameDisplay = document.getElementById('component-name');
         const feedbackArea = document.getElementById('feedback-area');
         const buttons = document.querySelectorAll('#button-area button');
-        // Elemen Gambar Baru
-        const componentImageDisplay = document.getElementById('component-image');
+        const componentImageDisplay = document.getElementById('component-image'); 
 
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -371,7 +374,7 @@
             document.getElementById('result-details').innerHTML = outputText;
         }
         
-        // Fungsi untuk memuat soal baru (DIUBAH)
+        // FUNGSI MEMUAT SOAL BARU (MEMUAT FILE GAMBAR LANGSUNG)
         function loadNewQuestion() {
             if (questionsAnswered >= ALL_QUESTIONS.length) {
                 endGame();
@@ -380,12 +383,11 @@
             
             currentQuestion = shuffledQuestions[currentQuestionIndex];
             
-            // Logika untuk menampilkan gambar dari Unsplash Source
-            const imageKeyword = currentQuestion.imageKeyword;
-            // URL menggunakan layanan placeholder gambar Unsplash berdasarkan kata kunci
-            const imageUrl = `https://source.unsplash.com/300x200/?${encodeURIComponent(imageKeyword)}`;
+            // Mengambil nama file gambar langsung dari data soal
+            const imagePath = currentQuestion.imageSrc; 
 
-            componentImageDisplay.src = imageUrl;
+            // Set atribut src elemen <img>
+            componentImageDisplay.src = imagePath;
             componentImageDisplay.alt = `Gambar ${currentQuestion.component}`;
             
             progressInfo.textContent = `Soal ${questionsAnswered + 1} dari ${ALL_QUESTIONS.length}`;
@@ -408,7 +410,7 @@
                 feedbackArea.textContent = '✔️ BENAR!';
                 feedbackArea.classList.add('correct');
             } else {
-                currentScore = Math.max(0, currentScore - 0); // Tidak ada pengurangan nilai
+                currentScore = Math.max(0, currentScore - 0); 
                 feedbackArea.textContent = `❌ SALAH! Jawaban: ${currentQuestion.type.toUpperCase()}`;
                 feedbackArea.classList.add('wrong');
             }
@@ -419,7 +421,7 @@
             
             setTimeout(() => {
                 loadNewQuestion();
-            }, isCorrect ? 800 : 1500); // Jeda lebih cepat jika benar
+            }, isCorrect ? 800 : 1500); 
         }
 
         function initializeGame() {
